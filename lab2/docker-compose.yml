@@ -1,0 +1,23 @@
+services:
+  # PHP-FPM: persistent workers, so an ini_set() from one request is inherited by
+  # every later request that worker serves. That persistence is what makes the
+  # handler-mismatch chain work without any per-directory config.
+  php-fpm:
+    image: php:8.2-fpm
+    container_name: p2s2-fpm
+    volumes:
+      - ./webroot:/var/www/html
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./www.conf:/usr/local/etc/php-fpm.d/zz-p2s.conf
+    security_opt: [seccomp:unconfined]
+    command: >
+      bash -c "mkdir -p /tmp/sessions && chmod 1777 /tmp/sessions && php-fpm"
+
+  nginx:
+    image: nginx:alpine
+    container_name: p2s2-nginx
+    ports: ["18080:80"]
+    volumes:
+      - ./webroot:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on: [php-fpm]
