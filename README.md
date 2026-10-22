@@ -1,5 +1,8 @@
 # php2shell — CVE-2026-109618 / CVE-2026-109619
 
+<img width="1135" height="705" alt="Screenshot From 2026-10-22 10-04-57" src="https://github.com/user-attachments/assets/5b6fe1ae-ec48-4be1-9002-07f31f4b996e" />
+
+
 Single-file exploit
 ```
 ./exploit.py http://target/                    scan only (default, no flags)
